@@ -1,0 +1,26 @@
+/* default (light) theme variables */
+:root {
+    --bg-main: linear-gradient(to right, #eef2f3, #dfe9f3);
+    --section-bg: rgba(255, 255, 255, 0.95);
+    --card-bg: linear-gradient(135deg, #ffffff, #f0f4ff);
+    --text-color: #222;
+    --heading-color: #111;
+    --nav-bg: rgba(0, 0, 0, 0.35);
+}
+
+/* dark theme variables */
+[data-theme="dark"] {
+    --bg-main: linear-gradient(135deg, #141e30, #243b55);
+    --section-bg: linear-gradient(135deg, #1c2b45, #243b5e);
+    --card-bg: linear-gradient(135deg, #1f2a44, #2e3f5f);
+    --text-color: #ffffff;
+    --heading-color: #ffffff;
+    --nav-bg: rgba(20, 30, 50, 0.55);
+}
+
+/* Apply to body globally */
+body {
+    background: var(--bg-main);
+    color: var(--text-color);
+    transition: background 0.4s ease, color 0.4s ease;
+}

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Teacher Upload</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #f4f6f9;
+}
+
+/* Container */
+.container {
+    max-width: 600px;
+    margin: 60px auto;
+}
+
+/* Card */
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* Header */
+.card h2 {
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+/* Form */
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+select, input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* File name display */
+.file-name {
+    margin-top: 5px;
+    font-size: 13px;
+    color: #555;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+button.loading {
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Result Box */
+.result {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    display: none;
+}
+
+.result.success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.result.error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Stats */
+.stats {
+    margin-top: 10px;
+    line-height: 1.8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <h2>Upload Teachers</h2>
+
+        <form id="uploadForm">
+
+            <!-- Department -->
+            <div class="form-group">
+                <label>Select Department</label>
+                <select id="department" name="department_id" required>
+                    <option>Loading...</option>
+                </select>
+            </div>
+
+            <!-- File -->
+            <div class="form-group">
+                <label>Select CSV File</label>
+                <input type="file" id="fileInput" name="excel" accept=".csv" required>
+                <div class="file-name" id="fileName">No file selected</div>
+            </div>
+
+            <!-- Button -->
+            <button type="submit" id="uploadBtn">Upload CSV</button>
+
+        </form>
+
+        <!-- Result -->
+        <div id="result" class="result"></div>
+
+    </div>
+</div>
+
+<script>
+
+// ================= LOAD DEPARTMENTS =================
+async function loadDepartments() {
+    try {
+        const res = await fetch('../Backend/Curd_Operation/get_hod_department.php');
+        const data = await res.json();
+
+        const select = document.getElementById('department');
+        select.innerHTML = '';
+
+        if (!Array.isArray(data) || data.length === 0) {
+            select.innerHTML = '<option>No departments found</option>';
+            return;
+        }
+
+        if (data.length === 1) {
+            const d = data[0];
+            select.innerHTML = `<option value="${d.department_id}" selected>${d.department_name}</option>`;
+        } else {
+            select.innerHTML = '<option value="">Select Department</option>';
+            data.forEach(d => {
+                select.innerHTML += `<option value="${d.department_id}">${d.department_name}</option>`;
+            });
+        }
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+loadDepartments();
+
+
+// ================= FILE NAME PREVIEW =================
+document.getElementById('fileInput').addEventListener('change', function() {
+    const fileName = this.files[0]?.name || "No file selected";
+    document.getElementById('fileName').innerText = fileName;
+});
+
+
+// ================= FORM SUBMIT =================
+document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('uploadBtn');
+    const result = document.getElementById('result');
+
+    const formData = new FormData(this);
+
+    // UI loading state
+    btn.classList.add('loading');
+    btn.innerText = "Uploading...";
+    btn.disabled = true;
+
+    result.style.display = "block";
+    result.className = "result";
+    result.innerHTML = "Processing... ⏳";
+
+    try {
+        const res = await fetch('../Backend/teacher_upload.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await res.json();
+
+        if (data.status === "success") {
+            result.className = "result success";
+            result.innerHTML = `
+                <strong>Upload Successful ✅</strong>
+                <div class="stats">
+                    Inserted: ${data.inserted} <br>
+                    Updated: ${data.updated} <br>
+                    Skipped: ${data.skipped} <br>
+                    Failed: ${data.failed}
+                </div>
+            `;
+        } else {
+            result.className = "result error";
+            result.innerHTML = `❌ ${data.message}`;
+        }
+
+    } catch (err) {
+        result.className = "result error";
+        result.innerHTML = "Upload failed. Check console.";
+        console.error(err);
+    }
+
+    // Reset button
+    btn.classList.remove('loading');
+    btn.innerText = "Upload CSV";
+    btn.disabled = false;
+});
+</script>
+
+</body>
+</html>

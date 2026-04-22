@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Success/Error Modal</title>
+</head>
+<body>
+
+<h1>Test Modal</h1>
+<button id="successBtn">Show Success</button>
+<button id="errorBtn">Show Error</button>
+
+<script src="SMS/Frontend/suscess_modal.js"></script>
+<script>
+document.getElementById('successBtn').addEventListener('click', () => {
+    showModal("Password Updated Successfully", "success");
+});
+document.getElementById('errorBtn').addEventListener('click', () => {
+    showModal("Something went wrong!", "error");
+});
+</script>
+
+</body>
+</html>

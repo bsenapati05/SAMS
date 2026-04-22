@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Dhenkanal Autonomous College</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <nav class="bg-indigo-900 text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-xl font-bold tracking-tight hover:text-indigo-200 transition">
+                DHENKANAL AUTONOMOUS COLLEGE
+            </a>
+            <div class="space-x-6 flex items-center">
+                <a href="index.html" class="cursor-pointer hover:text-indigo-300 transition duration-200 py-1">Home</a>
+                <a href="about.html" class="cursor-pointer hover:text-indigo-300 transition duration-200 py-1">About</a>
+                <a href="contact.html" class="border-b-2 border-white pb-1 font-semibold">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container mx-auto py-16 px-4">
+        <div class="max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+            
+            <div class="md:w-1/3 bg-indigo-700 text-white p-12">
+                <h2 class="text-3xl font-bold mb-6">Get in Touch</h2>
+                <p class="mb-10 text-indigo-100">Have questions? We are here to help you. Reach out to our administration office.</p>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-map-marker-alt mt-1 text-xl"></i>
+                        <p>Dhenkanal Autonomous College,<br>Dhenkanal, Odisha, India - 759001</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <i class="fas fa-phone-alt text-xl"></i>
+                        <p>+91 06762-224438</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <i class="fas fa-envelope text-xl"></i>
+                        <p>principal@dhenkanalcollege.nic.in</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:w-2/3 p-12">
+                <h3 class="text-2xl font-bold text-gray-800 mb-8">Send us a Message (Feedback)</h3>
+                
+                <form id="feedbackForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-600 mb-2">Full Name</label>
+                            <input type="text" name="name" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-600 mb-2">Email Address</label>
+                            <input type="email" name="email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-2">Upload Screenshot / Feedback Image</label>
+                        <input type="file" name="feedback_image" accept="image/*" class="w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-50 cursor-pointer">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-2">Message</label>
+                        <textarea name="message" rows="4" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></textarea>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="w-full md:w-auto bg-indigo-600 text-white font-bold py-3 px-12 rounded-lg hover:bg-indigo-700 transition duration-300 shadow-md flex items-center justify-center gap-2">
+                        <span>Submit Feedback</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-gray-400 py-6 text-center">
+        <p>© 2026 Dhenkanal Autonomous College. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+    document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const btn = document.getElementById('submitBtn');
+        const formData = new FormData(this);
+        
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+        // Ensure the path to ../Backend/send_feedback.php is correct relative to this file
+        fetch('../Backend/send_feedback.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(async response => {
+            const text = await response.text(); // Get raw text first to handle HTML errors
+            try {
+                return JSON.parse(text);
+            } catch (err) {
+                // If parsing fails, the PHP script likely sent an HTML error
+                console.error("Server Error Output:", text);
+                throw new Error("Server sent invalid JSON. Check console for details.");
+            }
+        })
+        .then(data => {
+            if(data.status === 'success') {
+                alert("Success: " + data.message);
+                document.getElementById('feedbackForm').reset();
+            } else {
+                alert("Error: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Fetch Error:', error);
+            alert('An error occurred. Check the console (F12) for the server error message.');
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = '<span>Submit Feedback</span>';
+        });
+    });
+</script>
+</body>
+</html>

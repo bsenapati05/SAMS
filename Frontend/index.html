@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- the font imported from google for the h1 -->
+<link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
+<!-- favicon ico of the site -->
+ <link rel="icon" type="image/png" href="Favicon_icon.png">
+ <!-- for adding font-awesome icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/SMS/Frontend/them.css">
+<title>Dhenkanal Autonomous College</title>
+
+<script>
+  // Apply saved theme early to prevent flash; guard against running before <body> exists
+  const savedTheme = localStorage.getItem("theme") || "light";
+  // Set a data-theme attribute on <html> early so CSS (including the icon) can respond immediately
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }
+
+  if (savedTheme === "dark") {
+    if (document.body) {
+      document.body.classList.add("dark");
+    } else {
+      // If body isn't parsed yet, wait for DOMContentLoaded
+      document.addEventListener("DOMContentLoaded", () => document.body.classList.add("dark"));
+    }
+  }
+</script>
+
+<style>
+/* ================= THEME VARIABLES ================= */
+:root{
+    --bg-main: linear-gradient(to right,#eef2f3,#dfe9f3);
+    --section-bg: rgba(255,255,255,0.95);
+    --card-bg: linear-gradient(135deg,#ffffff,#f0f4ff);
+    --text-color:#222;
+    --heading-color:#111;
+    --nav-bg: rgba(0,0,0,0.35);
+}
+
+body.dark{
+    --bg-main: linear-gradient(135deg,#141e30,#243b55);
+    --section-bg: linear-gradient(135deg,#1c2b45,#243b5e);
+    --card-bg: linear-gradient(135deg,#1f2a44,#2e3f5f);
+    --text-color:#ffffff;
+    --heading-color:#ffffff;
+    --nav-bg: rgba(20,30,50,0.55);
+}
+
+/* ================= GLOBAL ================= */
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:var(--bg-main);
+    color:var(--text-color);
+    transition:background 0.6s ease,color 0.6s ease;
+}
+
+h1, h2, h3, h5, p, li {
+    color: var(--text-color);
+    transition: color 0.6s ease;
+}
+
+
+/* ================= HEADER ================= */
+header{
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+    padding:18px 25px;
+}
+
+.header-container{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+}
+
+.logo img{
+    height:80px;
+    /* 🔽 Replace with local file: <img src="images/logo.png"> */
+}
+
+.college-title{text-align:center;}
+/* College Heading Font */
+.college-title h1 {
+    font-family: 'Kaushan Script', cursive;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+/* Theme Button */
+.theme-btn{
+    background:linear-gradient(135deg,#6a11cb,#2575fc);
+    border:none;
+    padding:10px 14px;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+    position:relative;
+    font-size:16px;
+}
+
+/* icon via CSS to avoid initial flash and keep in sync with html[data-theme] */
+.theme-btn::before{
+    content: "🌙";
+    display:inline-block;
+}
+html[data-theme="dark"] .theme-btn::before{
+    content: "☀️";
+}
+
+/* Login Dropdown */
+.login-menu{position:relative;z-index:9999;}
+.login-btn{
+    background:#1e90ff;
+    border:none;
+    padding:10px 18px;
+    color:white;
+    border-radius:6px;
+    cursor:pointer;
+}
+.login-dropdown{
+    display:none;
+    position:absolute;
+    right:0;
+    top:45px;
+    background:white;
+    min-width:180px;
+    border-radius:6px;
+    overflow:hidden;
+}
+/* ================= LOGIN DROPDOWN LINK STYLE ================= */
+.login-dropdown a{
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    position: relative;
+    transition: all 0.3s ease;
+}
+/* ================= HOVER BACKGROUND ================= */
+.login-dropdown a:hover{
+    background: linear-gradient(135deg,#1e90ff,#6a11cb);
+    color: #fff;
+}
+/* ================= POP EFFECT ================= */
+.login-dropdown a:hover{
+    transform: scale(1.05);
+    padding-left: 22px;
+}
+/* ================= LEFT HIGHLIGHT BAR ================= */
+.login-dropdown a::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: #1e90ff;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease;
+}
+
+.login-dropdown a:hover::before{
+    transform: scaleY(1);
+}
+
+
+/*it will fast the close of drop down of login button*/
+/*.login-dropdown a:hover{background:#f1f1f1;}
+.login-menu:hover .login-dropdown{display:block;}*/
+
+/*this will fix the drop down of login button */
+/* Show dropdown when active */
+.login-menu.active .login-dropdown {
+    display: block;
+}
+
+/* ================= NAVBAR ================= */
+nav{
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364); /* same as header */
+    backdrop-filter:blur(6px);
+    position:sticky;
+    top:0;
+    z-index:1000;
+    overflow: visible; /* allow dropdowns to overflow above other content (like the slider) */
+} 
+
+nav ul{
+    list-style:none;
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin:0;
+    padding:0;
+}
+
+nav li{position:relative;}
+nav a{
+    color:white;
+    padding:14px 20px;
+    display:block;
+    text-decoration:none;
+}
+
+nav a:hover{background:rgba(30,144,255,0.85);}
+
+/* ================= ADVANCED DROPDOWN TRANSITION ================= */
+/* ================= SIMPLE STACKED DROPDOWN ================= */
+
+/* Base dropdown */
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 260px;
+  background: #ffffff;          /* SOLID BACKGROUND */
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  padding: 6px 0;
+  z-index: 1000;
+}
+
+/* Side popup */
+.dropdown.right {
+  top: 0;
+  left: 100%;
+}
+
+/* Show dropdown */
+.has-sub:hover > .dropdown {
+  display: block;
+}
+
+/* Links */
+.dropdown a {
+  display: block;
+  padding: 10px 16px;
+  color: #000;
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* Hover effect */
+.dropdown a:hover {
+  background: #f2f2f2;
+}
+
+/* Parent positioning */
+.has-sub {
+  position: relative;
+}
+/* Mobile dropdown active state */
+@media (max-width: 768px) {
+    .has-sub.active > .dropdown {
+        display: block;
+    }
+}
+
+
+/* ================= SLIDER ================= */
+/* MAIN SLIDER CONTAINER */
+.slider {
+    position: relative;
+    width: 100%;
+    height: 75vh;
+    overflow: hidden;
+}
+
+
+
+.slides {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    transition: transform 0.8s ease;
+}
+
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;   /* full image visible */
+    display: block;
+    background: #000;
+}
+
+
+
+
+/* Image description on hover of slide caption */
+.slide-caption{
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: #fff;
+    z-index: 5;
+}
+
+/* Curved background shape */
+.caption-shape{
+    position: absolute;
+    inset: -18px -26px;
+    background: rgba(255, 255, 255, 0.02); /* white with 0.02 visibility */
+    border-radius: 60px 20px 60px 20px;
+    backdrop-filter: blur(4px); /* optional glass effect */
+    z-index: -1;
+}
+
+/* MAIN TEXT */
+.slide-caption h2{
+    margin: 0;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* SUB TEXT */
+.slide-caption p{
+    margin-top: 6px;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* Animation active state */
+.slide-caption.animate h2{
+    animation: slideUp 1s ease forwards;
+}
+
+.slide-caption.animate p{
+    animation: fadeUp 1s ease forwards;
+    animation-delay: 0.35s;
+}
+
+/* Animations for the slide text or caption*/
+@keyframes slideUp{
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp{
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Desktop */
+.slide-caption h2{ font-size: 2.2rem; }
+.slide-caption p{ font-size: 1.1rem; }
+
+/* Tablet */
+@media (max-width: 992px){
+    .slide-caption h2{ font-size: 1.8rem; }
+    .slide-caption p{ font-size: 1rem; }
+}
+
+/* Mobile */
+@media (max-width: 576px){
+    .slide-caption h2{ font-size: 1.3rem; }
+    .slide-caption p{ font-size: 0.9rem; }
+    .caption-shape{
+        border-radius: 30px;
+    }
+}
+
+
+
+/* Image description on hover in slide 2
+.slide-caption2{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    background:rgba(0,0,0,0.65);
+    color:white;
+    padding:5px;
+    transform:translateY(100%);
+    transition:0.5s ease;
+}*/
+
+/* .slide:hover .slide-caption{
+    transform:translateY(0);
+} */
+
+
+/* Slider navigation arrows - fully visible above the images */
+/* ================= SLIDER ARROWS (HOVER VISIBILITY) ================= */
+
+.prev-slide, .next-slide {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    
+    background: rgba(255,255,255,0.15); /* transparent */
+    color: white;
+    border: none;
+    font-size: 32px;
+    padding: 12px 18px;
+    cursor: pointer;
+    border-radius: 50%;
+    
+    opacity: 0;                 /* hidden by default */
+    pointer-events: auto;       /* still clickable */
+    
+    z-index: 20;
+    backdrop-filter: blur(4px);
+    
+    transition:
+        opacity 0.3s ease,
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+/* Show arrows when hovering slider */
+.slider:hover .prev-slide,
+.slider:hover .next-slide {
+    opacity: 1;
+}
+/* ================= MOBILE / TOUCH DEVICE SAFETY ================= */
+@media (hover: none) {
+    .prev-slide,
+    .next-slide {
+        opacity: 1;
+        background: rgba(255,255,255,0.25);
+    }
+}
+
+/* Hover effect on buttons */
+.prev-slide:hover,
+.next-slide:hover {
+    background: rgba(255,255,255,0.35);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-slide { left: 18px; }
+.next-slide { right: 18px; }
+
+
+/* Hover effect for arrows */
+.prev-slide:hover, .next-slide:hover {
+    background: #b7c2ce; /* darker blue on hover */
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-slide { left: 15px; }
+.next-slide { right: 15px; }
+
+
+/* ================= SECTIONS ================= */
+.section{
+    max-width:1100px;
+    margin:40px auto;
+    padding:30px;
+    background:var(--section-bg);
+    border-radius:14px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    transition:background 0.6s ease,transform 0.6s ease;
+}
+
+.section:hover{transform:translateY(-6px);}
+
+/* ================== FACILITIES SECTION STYLING ================== */
+.facilities-section {
+    padding: 60px 8%;
+    background: var(--section-bg, #ffffff);
+}
+
+/* Section heading */
+.section-title {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 50px;
+    font-weight: 700;
+}
+
+.section-title span {
+    color: red; /* Red color like original site */
+}
+
+/* Grid container */
+.facilities-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+/* Individual facility card */
+.facility-card {
+    border: 2px solid red;
+    padding: 30px 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+/* Hover animation */
+.facility-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* Icon styling */
+.facility-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+/* Facility title */
+.facility-card h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: inherit;
+}
+
+/* Facility description */
+.facility-card p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: inherit;
+}
+
+/* Read more link */
+.facility-card a {
+    color: red;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* ================== DARK THEME SUPPORT ================== */
+body.dark .facilities-section {
+    background: linear-gradient(135deg, #121212, #1f1f1f);
+    color: #ffffff;
+}
+
+body.dark .facility-card {
+    border-color: #ff4d4d;
+}
+
+body.dark .facility-card a {
+    color: #ff8080;
+}
+
+
+/* ================= SCROLL ANIMATION ================= */
+.fade-in{
+    opacity:0;
+    transform:translateY(40px);
+    transition:opacity 0.8s ease,transform 0.8s ease;
+}
+.fade-in.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* ================= FOOTER ================= */
+footer{
+    background:#0f2027;
+    color:white;
+    padding:40px 20px;
+}
+
+.footer-container{
+    max-width:1100px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:30px;
+}
+
+footer a{
+    color:#ccc;
+    text-decoration:none;
+    display:block;
+    margin-bottom:6px;
+}
+
+footer a:hover{color:white;}
+
+.footer-bottom{
+    text-align:center;
+    margin-top:25px;
+    border-top:1px solid rgba(255,255,255,0.3);
+    padding-top:15px;
+}
+/* ================= FOOTER HEADING FIX ================= */
+footer h1,
+footer h2,
+footer h3,
+footer h4,
+footer h5,
+footer h6,
+.Footer_contact{
+    color: #ffffff !important;
+    transition: none; /* prevent theme animation on footer headings */
+}
+.Footer_contact a{
+    display:inline;
+    color:inherit;
+    text-decoration:none;
+}
+
+footer a {
+    color: #cccccc;
+}
+
+
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:768px){
+    .header-container{flex-direction:column;gap:10px;}
+    nav ul{flex-direction:column;}
+    .dropdown,.sub-dropdown{position:static;}
+}
+/* ================= HEADER THEME BACKGROUND ================= */
+
+/* LIGHT THEME HEADER (default) */
+header {
+    background: linear-gradient(
+        135deg,
+        #f7fbff,
+        #eaf2ff,
+        #ffffff
+    );
+    transition: background 0.4s ease;
+}
+
+/* Keep text dark in light mode */
+
+header h1,
+header h5,
+header p {
+    color: #111;
+}
+
+
+/* DARK THEME HEADER (same as present) */
+body.dark header {
+    background: linear-gradient(
+        135deg,
+        #0f2027,
+        #203a43,
+        #2c5364
+    );
+}
+
+/* Keep text white in dark mode */
+/* Keep text white in dark mode */
+body.dark header h1,
+body.dark header h5,
+body.dark header p {
+    color: #ffffff;
+}
+/* ================= MOBILE NAVBAR ================= */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: white;
+    padding: 12px 18px;
+    cursor: pointer;
+}
+
+/* Mobile view only */
+@media (max-width: 768px) {
+
+    .nav-toggle {
+        display: block;
+    }
+
+    nav ul {
+        display: none;
+        flex-direction: column;
+        background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+        width: 100%;
+    }
+
+    nav ul.active {
+        display: flex;
+    }
+
+    nav li {
+        width: 100%;
+    }
+
+    nav a {
+        padding: 14px 18px;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* Dropdowns stack normally */
+    .dropdown,
+    .dropdown.right {
+        position: static;
+        box-shadow: none;
+        border: none;
+        background: #ffffff;
+    }
+}
+/* ================= MOBILE SLIDER FIX ================= */
+@media (max-width: 576px) {
+
+    .slider {
+        height: 55vh;
+    }
+
+    .slide img {
+        object-fit: cover;      /* fill container */
+        background: none;       /* remove black bars */
+    }
+
+    .slide-caption {
+        bottom: 12%;
+        padding: 8px 12px;
+    }
+
+    .caption-shape {
+        background: rgba(255,255,255,0.08); /* more readable */
+        backdrop-filter: blur(6px);
+    }
+}
+
+
+</style>
+</head>
+<body>
+   
+
+<!-- HEADER -->
+<header>
+<div class="header-container">
+    <div class="logo">
+        <!-- 🔽 Replace with your local logo file -->
+        <img src="Dhenkanal_College_logo.png" alt="College Logo">
+    </div>
+    <div class="college-title">
+        <h1 id="clg_name">Dhenkanal Autonomous College, Dhenkanal</h1>
+        <h5 id="clg_name">ଢେଙ୍କାନାଳ ସ୍ୱୟଂଶାସିତ ମହାବିଦ୍ୟାଳୟ ଢେଙ୍କାନାଳ</h5>
+        <p>Autonomous | NAAC B++ | Odisha</p>
+    </div>
+    <div class="header-actions">
+        <button class="theme-btn" aria-label="Toggle theme"></button>
+        <div class="login-menu">
+            <button class="login-btn">Login ▾</button>
+            <div class="login-dropdown">
+                <a href="/SMS/Frontend/student_login.html">Student</a>
+                <a href="/SMS/Frontend/teacher_login.html">Lecture</a>
+              
+                <a href="/SMS/Frontend/admin_login.html">Admin</a>
+            </div>
+        </div>
+    </div>
+</div>
+</header>
+
+<!-- NAVBAR -->
+<nav>
+    <button class="nav-toggle" aria-label="Toggle navigation">
+    ☰
+</button>
+
+<ul>
+    <li><a href="#">Home</a></li>
+    <!-- Departments dropdown: `.dropdown-parent` marks the parent <li> that contains a nested `.dropdown` list.
+         Nested `.dropdown` lists stack vertically for a simple, authentic dropdown structure. -->
+   <li class="has-sub">
+  <a href="#">Departments ▸</a>
+
+  <ul class="dropdown">
+
+    <!-- UG -->
+    <li class="has-sub">
+      <a href="#">UG ▸</a>
+      <ul class="dropdown right">
+
+        <li class="has-sub">
+          <a href="#">Arts ▸</a>
+          <ul class="dropdown right">
+            <li><a href="https://dhenkanalcollege.ac.in/home/economics#Profile">Economics</a></li>
+            <li><a href="https://dhenkanalcollege.ac.in/home/education#Profile">Education</a></li>
+            <li><a href="https://dhenkanalcollege.ac.in/home/english#Profile">English</a></li>
+            <li><a href="https://dhenkanalcollege.ac.in/home/history#Profile">History</a></li>
+            <li><a href="https://dhenkanalcollege.ac.in/home/hindi#Profile">Hindi</a></li>
+            <li><a href="https://dhenkanalcollege.ac.in/home/mathematics#Profile">Math</a></li>
+            <li><a href="#">odia</a></li>
+            <li><a href="https://dhenkanalcollege.ac.in/home/philosophy#Profile">Philosopy</a></li>
+            <li><a href="https://dhenkanalcollege.ac.in/home/political">Political Science</a></li>
+             <li><a href="https://dhenkanalcollege.ac.in/home/psychology#Profile">Phycsology</a></li>
+              <li><a href="https://dhenkanalcollege.ac.in/home/sanskrit">Sanskrit</a></li>
+          </ul>
+        </li>
+
+        <li class="has-sub">
+          <a href="#">Science ▸</a>
+          <ul class="dropdown right">
+            <li><a href="https://dhenkanalcollege.ac.in/home/physics#Profile">Physics</a></li>
+            <li><a href="https://dhenkanalcollege.ac.in/home/chemistry#Profile">Chemistry</a></li>
+            <li><a href="https://dhenkanalcollege.ac.in/home/mathematics#Profile">Mathematics</a></li>
+            <li><a href="https://dhenkanalcollege.ac.in/home/botany#Profile">Botany</a></li>
+            <li><a href="https://dhenkanalcollege.ac.in/home/zoology#Profile">Zoology</a></li>
+            <li><a href="https://dhenkanalcollege.ac.in/home/computer_science#Profile">Computer Science</a></li>
+             <li><a href="https://dhenkanalcollege.ac.in/home/bio_technology#Profile">Bio Technology</a></li>
+          </ul>
+        </li>
+
+        <li class="has-sub">
+          <a href="#">Commerce ▸</a>
+          <ul class="dropdown right">
+            <li><a href="https://dhenkanalcollege.ac.in/home/commerce#Profile">Accounting</a></li>
+            <li><a href="#">Finance</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </li>
+
+    <!-- PG -->
+    <li class="has-sub">
+      <a href="#">PG ▸</a>
+      <ul class="dropdown right">
+
+        <li class="has-sub">
+          <a href="#">Arts ▸</a>
+          <ul class="dropdown right">
+            <li><a href="#">Odia</a></li>
+            <li><a href="#">English</a></li>
+            <li><a href="#">History</a></li>
+            <li><a href="#">Political Science</a></li>
+            <li><a href="#">Philosophy</a></li>
+            <li><a href="#">Sanskrit</a></li>
+          </ul>
+        </li>
+
+        <li class="has-sub">
+          <a href="#">Science ▸</a>
+          <ul class="dropdown right">
+           <li><a href="#">Physics</a></li>
+            <li><a href="#">Chemistry</a></li>
+            <li><a href="#">Mathematics</a></li>
+            <li><a href="#">Botany</a></li>
+            <li><a href="#">Zoology</a></li>
+            <li><a href="#">Computer Science</a></li>
+             <li><a href="#">Bio Technology</a></li>
+          </ul>
+        </li>
+           
+        <li class="has-sub">
+          <a href="#">Commerce ▸</a>
+          <ul class="dropdown right">
+           <li><a href="#">Accounting</a></li>
+          </ul>
+        </li>
+        
+         <li class="has-sub">
+          <a href="#">PPP (Self Financing) ▸</a>
+          <ul class="dropdown right">
+           <li><a href="#">MSC</a></li>
+            <li><a href="#">MBA</a></li>
+             <li><a href="#">MSW</a></li>
+          </ul>
+        </li> 
+
+      </ul>
+    </li> 
+
+  </ul>
+</li>
+
+
+
+    
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+</ul>
+</nav>
+
+<!-- SLIDER -->
+<div class="slider">
+    <div class="slides">
+        <div class="slide">
+            <img src="bg2.png" alt="Slide 2">
+            <div class="slide-caption">
+                <div class="caption-shape"></div>
+               <h3><i>Welcome to Dhenkanal Autonomous college</i></h3><br>
+               <p><span>Where curiosity meets discovery.</span></p>
+            </div>
+        </div>
+        <div class="slide">
+            <img src="clg_entrance.jpg" alt="Slide 3">
+            <div class="slide-caption">
+                <div class="caption-shape"></div>
+                Learning Environment
+            </div>
+        </div>
+        <div class="slide">
+            <img src="bg9.png" alt="Slide 4">
+            <div class="slide-caption">
+                <div class="caption-shape"></div>
+                Learning Environment
+            </div>
+        </div>
+        <div class="slide">
+            <img src="Dhenkanal_College_4.jpg" alt="Slide 5">
+            <div class="slide-caption">
+                <div class="caption-shape"></div>
+                Learning Environment
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <button class="prev-slide">&#10094;</button> <!-- ❮ -->
+    <button class="next-slide">&#10095;</button> <!-- ❯ -->
+
+</div>
+
+
+<!-- ABOUT -->
+<div class="section fade-in">
+<h2>About College</h2>
+<p>
+Established in 1959, Dhenkanal Autonomous College stands as a premier seat of higher learning in Odisha, committed to the pursuit of academic excellence and holistic student development.
+Recognized by the University Grants Commission (UGC) under sections 2(f) and 12(B) and affiliated with Utkal University, the institution enjoys Autonomous status,
+which empowers it to curate industry-aligned curricula and maintain a rigorous, independent examination system. The college offers a diverse academic portfolio across the Arts, Science, and Commerce streams,
+including specialized Undergraduate (Honours) and Postgraduate programs designed to foster intellectual growth and research aptitude. With a sprawling, eco-friendly campus, a well-stocked digital library, and modern laboratory facilities,
+ the college provides a conducive environment for both academic and extracurricular pursuits through units like the NCC, NSS, and various career counseling initiatives. Accredited by NAAC, 
+Dhenkanal Autonomous College continues to uphold its legacy of transforming students into socially responsible,
+ skilled, and ethically sound global citizens.
+</p>
+</div>
+
+<!-- ================== COLLEGE FACILITIES SECTION ================== -->
+<section class="facilities-section">
+
+    <!-- Section Heading -->
+    <h2 class="section-title">
+        COLLEGE <span>FACILITIES</span>
+    </h2>
+
+    <!-- Facilities Grid Container -->
+    <div class="facilities-container">
+
+        <!-- Facility Card 1 -->
+        <div class="facility-card">
+            <div class="facility-icon">🎓</div>
+            <h3>Scholarship Facilities</h3>
+            <p>
+                The Government of Odisha provides various scholarship schemes
+                for SC, ST, OBC and minority students.
+            </p>
+            <a href="scholarship.html">Read More..</a>
+        </div>
+
+        <!-- Facility Card 2 -->
+        <div class="facility-card">
+            <div class="facility-icon">📚</div>
+            <h3>Modern Book Library</h3>
+            <p>
+                The college library (Nanak Bhawan) houses over 51,000 books,
+                journals and reference materials.
+            </p>
+            <a href="library.html">Read More..</a>
+        </div>
+
+        <!-- Facility Card 3 -->
+        <div class="facility-card">
+            <div class="facility-icon">🛋️</div>
+            <h3>Common Room</h3>
+            <p>
+                A dedicated space for students to relax, interact and
+                engage in informal discussions.
+            </p>
+            <a href="common_room.html">Read More..</a>
+        </div>
+
+        <!-- Facility Card 4 -->
+        <div class="facility-card">
+            <div class="facility-icon">⚽</div>
+            <h3>Games & Sports</h3>
+            <p>
+                Facilities for indoor and outdoor games to promote
+                physical fitness and sportsmanship.
+            </p>
+            <a href="sports.html">Read More..</a>
+        </div>
+
+        <!-- Facility Card 5 -->
+        <div class="facility-card">
+            <div class="facility-icon">💻</div>
+            <h3>Modern Computer Lab</h3>
+            <p>
+                Well-equipped computer laboratories with internet
+                access for academic and research work.
+            </p>
+            <a href="computer_lab.html">Read More..</a>
+        </div>
+
+        <!-- Facility Card 6 (NCC Added as Requested) -->
+        <div class="facility-card">
+            <div class="facility-icon">🪖</div>
+            <h3>NCC (National Cadet Corps)</h3>
+            <p>
+                NCC unit promotes discipline, leadership qualities
+                and national service among students.
+            </p>
+            <a href="ncc.html">Read More..</a>
+        </div>
+
+    </div>
+</section>
+<!-- ================== END OF FACILITIES SECTION ================== -->
+
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-container">
+    <div>
+        <h3>Quick Links</h3>
+        <a href="#">Home</a>
+        <a href="#">Departments</a>
+        <a href="#">Admissions</a>
+        <a href="#">Examinations</a>
+    </div>
+    <div>
+        <h3>Academics</h3>
+        <a href="#">Arts</a>
+        <a href="#">Science</a>
+        <a href="#">Commerce</a>
+    </div>
+    <div>
+        <h3>Contact Details</h3>
+        <p class="Footer_contact">Dhenkanal Autonomous College</p>
+        <p class="Footer_contact">Kunjakanta, Dhenkanal</p>
+        <p class="Footer_contact">Odisha – 759001</p>
+        <p class="Footer_contact">
+           <i class="fa-solid fa-phone"></i>
+            <b> :</b> 06762-224420 / 06762-226885</p>
+        <p class="Footer_contact">
+           <i class="fa-solid fa-envelope"></i>
+              <a href="mailto:principaldklcol@yahoo.in">
+                <b> :</b> principaldklcol@yahoo.in
+              </a>
+         </p>
+
+    </div>
+</div>
+
+<div class="footer-bottom">
+    © 2026 Biplab Senapati. All Rights Reserved.
+</div>
+</footer>
+<script>
+/* ================= THEME TOGGLE ================= */
+/* ================= THEME TOGGLE ================= */
+const themeToggleBtn = document.querySelector(".theme-btn");
+const body = document.body;
+
+// Function to apply theme
+function setTheme(theme) {
+    if (theme === "dark") {
+        body.classList.add("dark");
+    } else {
+        body.classList.remove("dark");
+    }
+    // keep html[data-theme] in sync so CSS-driven UI (icon, etc.) updates immediately
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem("theme", theme);
+}
+
+// Toggle theme
+function toggleTheme() {
+    const currentTheme = body.classList.contains("dark") ? "dark" : "light";
+    setTheme(currentTheme === "dark" ? "light" : "dark");
+}
+
+// Event listener
+themeToggleBtn.addEventListener("click", toggleTheme);
+
+// Apply saved theme on load (optional since early script handles it)
+setTheme(localStorage.getItem("theme") || "light");
+
+
+/* ================= LOGIN DROPDOWN CLICK CONTROL ================= */
+
+const loginMenu = document.querySelector(".login-menu");
+const loginBtn = document.querySelector(".login-btn");
+
+// Toggle dropdown on button click
+loginBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // prevent closing immediately
+    loginMenu.classList.toggle("active");
+});
+
+// Close dropdown when clicking outside
+document.addEventListener("click", (e) => {
+    if (!loginMenu.contains(e.target)) {
+        loginMenu.classList.remove("active");
+    }
+});
+
+/* ================= NAVBAR DROPDOWN CLICK + ACCESSIBILITY ================= */
+// Click-to-toggle for dropdowns (works on touch devices) and keyboard support.
+(function(){
+  // Utility to close other open dropdowns
+  function closeOtherDropdowns(current){
+    document.querySelectorAll('.dropdown-parent.open').forEach(p=>{
+      if(p!==current){
+        p.classList.remove('open');
+        const t = p.querySelector(':scope > a');
+        if(t) t.setAttribute('aria-expanded','false');
+      }
+    });
+  }
+
+  document.querySelectorAll('.dropdown-parent').forEach(parent=>{
+    const trigger = parent.querySelector(':scope > a');
+    const submenu = parent.querySelector(':scope > .dropdown');
+    if(!trigger || !submenu) return; // only attach to items with submenus
+
+    // initialize ARIA
+    trigger.setAttribute('aria-haspopup','true');
+    trigger.setAttribute('aria-expanded','false');
+    trigger.setAttribute('role','button');
+
+    // Click toggles open/close (prevents default navigation for '#')
+    trigger.addEventListener('click', (ev)=>{
+      // prevent navigation if href is '#' or no meaningful target
+      if (trigger.getAttribute('href') === '#' || trigger.getAttribute('href') === '') ev.preventDefault();
+      const isOpen = parent.classList.toggle('open');
+      trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if(isOpen) closeOtherDropdowns(parent);
+    });
+
+    // Keyboard support: Enter or Space toggles
+    trigger.addEventListener('keydown', (ev)=>{
+      if(ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        trigger.click();
+      }
+    });
+  });
+
+  // Close all dropdowns when clicking outside any .dropdown-parent
+  document.addEventListener('click', (ev)=>{
+    if(!ev.target.closest('.dropdown-parent')){
+      document.querySelectorAll('.dropdown-parent.open').forEach(p=>{
+        p.classList.remove('open');
+        const t = p.querySelector(':scope > a');
+        if(t) t.setAttribute('aria-expanded','false');
+      });
+    }
+  });
+
+  // Close with Escape key
+  document.addEventListener('keydown', (ev)=>{
+    if(ev.key === 'Escape'){
+      document.querySelectorAll('.dropdown-parent.open').forEach(p=>{
+        p.classList.remove('open');
+        const t = p.querySelector(':scope > a');
+        if(t){ t.setAttribute('aria-expanded','false'); t.focus(); }
+      });
+    }
+  });
+})();
+
+
+/* ================= SLIDER FUNCTION ================= */
+let currentSlide = 0;
+const slides = document.querySelectorAll(".slide");
+const totalSlides = slides.length;
+const slideContainer = document.querySelector(".slides");
+
+slideContainer.style.transform = "translateX(0%)";
+/* ================= SLIDE CAPTION ANIMATION ================= */
+
+function animateCaptions() {
+    document.querySelectorAll(".slide-caption").forEach(caption => {
+        caption.classList.remove("animate");
+        // force reflow so animation restarts
+        void caption.offsetWidth;
+        caption.classList.add("animate");
+    });
+}
+
+function moveSlide(){
+    currentSlide++;
+    if(currentSlide >= totalSlides) currentSlide = 0;
+    slideContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+    animateCaptions();
+}
+
+
+/* ================= SLIDER BUTTON CONTROL ================= */
+const prevBtn = document.querySelector(".prev-slide");
+const nextBtn = document.querySelector(".next-slide");
+
+prevBtn.addEventListener("click", () => {
+    currentSlide--;
+    if (currentSlide < 0) currentSlide = totalSlides - 1;
+    slideContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+    animateCaptions();
+});
+
+
+nextBtn.addEventListener("click", () => {
+    moveSlide();
+});
+
+/* Auto slide */
+let slideInterval = setInterval(moveSlide, 4000);
+
+/* Pause on hover */
+slideContainer.addEventListener("mouseenter", () => clearInterval(slideInterval));
+slideContainer.addEventListener("mouseleave", () => {
+    slideInterval = setInterval(moveSlide, 4000);
+});
+// Animate first slide caption on page load
+animateCaptions();
+
+/* ================= SCROLL ANIMATION ================= */
+const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+        if(entry.isIntersecting){
+            entry.target.classList.add("show");
+        }
+    });
+},{threshold:0.15});
+
+document.querySelectorAll(".fade-in").forEach(el=>observer.observe(el));
+/* ================= MOBILE NAV TOGGLE ================= */
+const navToggle = document.querySelector(".nav-toggle");
+const navMenu = document.querySelector("nav ul");
+
+navToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+});
+ 
+// Mobile dropdown click support
+document.querySelectorAll('.has-sub > a').forEach(link => {
+    link.addEventListener('click', function (e) {
+        if (window.innerWidth <= 768) {
+            e.preventDefault();
+
+            const parent = this.parentElement;
+
+            // Close other open dropdowns (optional but recommended)
+            document.querySelectorAll('.has-sub').forEach(item => {
+                if (item !== parent) {
+                    item.classList.remove('active');
+                }
+            });
+
+            parent.classList.toggle('active');
+        }
+    });
+});
+
+  
+</script>
+ //link for them storage
+    <script src="/SMS/Frontend/js/them.js"></script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login | Dhenkanal Autonomous College</title>
+    <link rel="stylesheet" href="/SMS/Frontend/them.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <style>
+        :root {
+            --accent-orange: #ffb129;
+            --input-border: #ffb129;
+            --link-color: #666;
+            --link-hover: #ffb129;
+        }
+
+        [data-theme="dark"] {
+            --link-color: #bbb;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--section-bg);
+            width: 100%;
+            max-width: 850px;
+            display: flex;
+            flex-direction: row;
+            border-radius: 24px;
+            overflow: visible; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            position: relative;
+            padding: 60px 40px 40px 40px;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .top-banner {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-orange);
+            color: #1a1a1a;
+            padding: 12px 50px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 22px;
+            box-shadow: 0 8px 15px rgba(255, 177, 41, 0.4);
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .illustration-side {
+            flex: 1.1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .image-circle {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-orange);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .image-circle img {
+            width: 80%;
+            height: auto;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+        }
+
+        .form-side {
+            flex: 1;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 18px;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            border-bottom: 2.5px solid var(--input-border);
+            padding-bottom: 5px;
+            transition: border-color 0.3s;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #e59400;
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            padding: 10px 0;
+            outline: none;
+            color: var(--text-color);
+        }
+
+        .input-wrapper i {
+            font-size: 20px;
+            color: #333;
+            margin-left: 10px;
+        }
+
+        [data-theme="dark"] .input-wrapper i {
+            color: #eee;
+        }
+
+        .forgot-password-wrap {
+            text-align: right;
+            margin-top: -10px;
+            margin-bottom: 25px;
+        }
+
+        .forgot-password-wrap a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password-wrap a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: var(--accent-orange);
+            color: #1a1a1a;
+            border: none;
+            padding: 14px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(255, 177, 41, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: #f0a010;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(255, 177, 41, 0.4);
+        }
+
+        /* Error Message Styling */
+        #error-msg {
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .login-card {
+                flex-direction: column;
+                margin-top: 40px;
+                padding-top: 60px;
+            }
+            .image-circle {
+                width: 220px;
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="top-banner">STUDENT LOGIN</div>
+
+    <div class="illustration-side">
+        <div class="image-circle">
+            <img src="https://cdn-icons-png.flaticon.com/512/3449/3449692.png" alt="Students">
+        </div>
+    </div>
+
+    <div class="form-side">
+        <div id="error-msg" style="color: red; margin-bottom: 20px;"></div>
+
+        <form method="POST" action="/SMS/Backend/Student_login.php">
+            
+            <div class="input-group">
+                <label>College ID</label>
+                <div class="input-wrapper">
+                    <input type="text" name="login" placeholder="College Roll Number" required>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <div class="input-wrapper">
+                    <input type="password" name="password" id="password" placeholder="••••••••" required>
+                    <i class="fa-solid fa-lock" id="togglePassword" style="cursor: pointer;"></i>
+                </div>
+            </div>
+
+            <div class="forgot-password-wrap">
+                <a href="/SMS/Backend/forget_password.php">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="login-btn">LOGIN</button>
+            
+        </form>
+    </div>
+</div>
+
+<script>
+    const togglePassword = document.getElementById("togglePassword");
+    const password = document.getElementById("password");
+
+    togglePassword.addEventListener("click", function () {
+        const type = password.type === "password" ? "text" : "password";
+        password.type = type;
+        this.classList.toggle("fa-lock");
+        this.classList.toggle("fa-lock-open");
+    });
+
+    // Show error from URL parameter if exists
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get('error');
+    if (error) {
+        const errorDiv = document.getElementById('error-msg');
+        errorDiv.textContent = decodeURIComponent(error);
+
+        // Optional: hide the message after 5 seconds
+        setTimeout(() => {
+            errorDiv.textContent = '';
+        }, 5000);
+    }
+</script>
+<script src="/SMS/Frontend/js/them.js"></script>
+  
+</body>
+</html>

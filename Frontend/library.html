@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Knowledge Center | DAC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --amber: #f59e0b; --dark: #0f172a; }
+        body { background: var(--dark); color: #fff; font-family: 'Inter', sans-serif; margin: 0; }
+        .hero { height: 40vh; background: linear-gradient(rgba(15,23,42,0.8), rgba(15,23,42,0.8)), url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80'); background-size: cover; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 40px; max-width: 1200px; margin: auto; }
+        .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; backdrop-filter: blur(10px); }
+        .card i { color: var(--amber); font-size: 2rem; margin-bottom: 15px; }
+        h3 { color: var(--amber); }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Central Library Portal</h1>
+    </div>
+    <div class="grid">
+        <div class="card"><i class="fa-solid fa-book"></i><h3>65,000+ Books</h3><p>Access physical archives ranging from Science to Literature.</p></div>
+        <div class="card"><i class="fa-solid fa-globe"></i><h3>E-Resources</h3><p>Digital access to N-LIST and National Digital Library journals.</p></div>
+        <div class="card"><i class="fa-solid fa-clock"></i><h3>Open Hours</h3><p>10:00 AM - 5:00 PM (Monday to Saturday)</p></div>
+    </div>
+</body>
+</html>

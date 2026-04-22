@@ -1,0 +1,59 @@
+<div class="upload-form-wrapper" style="background: rgba(30, 41, 59, 0.5); padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-top: 10px;">
+    <p style="color: #fb7185; font-size: 0.85em; margin-bottom: 15px; border-left: 3px solid #f43f5e; padding-left: 10px;">
+        <strong>Important:</strong> Please ensure your file is in <b>.csv</b> format.
+    </p>
+
+    <form id="excel-upload-form" action="upload_excel.php" method="post" enctype="multipart/form-data">
+        <div style="margin-bottom: 15px">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #94a3b8; font-size: 0.8rem;">Select Program:</label>
+            <select name="program" required style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: #0f172a; color: white;">
+                <option value="">-- Choose Program --</option>
+                <option value="UG">Undergraduate (UG)</option>
+                <option value="PG">Postgraduate (PG)</option>
+            </select>
+        </div>
+
+        <div style="margin-bottom: 20px">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: #94a3b8; font-size: 0.8rem;">Select CSV File:</label>
+            
+            <input type="file" name="attachment" id="csv-file-input" accept=".csv" required 
+                   style="display: none;" 
+                   onchange="updateFileName(this)">
+            
+            <div onclick="document.getElementById('csv-file-input').click()" 
+                 id="file-drop-area"
+                 style="width: 100%; padding: 20px; background: rgba(0,0,0,0.2); border: 2px dashed rgba(20, 184, 166, 0.3); border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s;">
+                <i class="fas fa-file-csv" style="font-size: 1.5rem; color: #14b8a6; margin-bottom: 8px; display: block;"></i>
+                <span id="file-name-text" style="color: #94a3b8; font-size: 0.85rem;">Click to select CSV file</span>
+            </div>
+        </div>
+
+        <button type="submit" id="submit-upload-btn" style="width: 100%; background: #14b8a6; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.3s;">
+            <i class="fas fa-cloud-upload-alt" style="margin-right: 8px;"></i> Start Upload Process
+        </button>
+    </form>
+</div>
+
+<script>
+    // This function handles the filename display
+    function updateFileName(input) {
+        const textLabel = document.getElementById('file-name-text');
+        const dropArea = document.getElementById('file-drop-area');
+        
+        if (input.files && input.files.length > 0) {
+            const fileName = input.files[0].name;
+            textLabel.innerHTML = "Selected: <b style='color:#14b8a6'>" + fileName + "</b>";
+            dropArea.style.borderColor = "#14b8a6";
+            dropArea.style.background = "rgba(20, 184, 166, 0.05)";
+        } else {
+            textLabel.innerText = "Click to select CSV file";
+            dropArea.style.borderColor = "rgba(20, 184, 166, 0.3)";
+            dropArea.style.background = "rgba(0,0,0,0.2)";
+        }
+    }
+
+    // Button hover effects
+    const uploadBtn = document.getElementById("submit-upload-btn");
+    uploadBtn.onmouseover = function() { this.style.background = "#0f766e"; this.style.transform = "translateY(-1px)"; };
+    uploadBtn.onmouseout = function() { this.style.background = "#14b8a6"; this.style.transform = "translateY(0)"; };
+</script>
